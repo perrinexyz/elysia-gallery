@@ -5,7 +5,7 @@ import HtmlFrame from "@/components/HtmlFrame";
 import PixelImage, { extractPngDataURI } from "@/components/PixelImage";
 import { fetchTokenBody, parseTokenFields, extractTitle, fetchTokenOwner } from "@/lib/eth";
 import { useLiveBids } from "@/lib/manifold";
-import { getListingIdForToken } from "@/lib/manifold-blockchain";
+import { getListingIdForToken, getClaimPageIdForToken } from "@/lib/manifold-blockchain";
 import Container from "@/components/Container";
 
 import { useRouter } from "next/navigation";
@@ -57,7 +57,8 @@ export default function ArtPage() {
     seconds: number;
   } | null>(null);
 
-  const listingId = getListingIdForToken(tokenId);
+const listingId = getListingIdForToken(tokenId); // For bid fetching
+const claimPageId = getClaimPageIdForToken(tokenId); // For the link
   const auctionEndTime = AUCTION_END_TIMES[tokenId];
 
   useEffect(() => {
@@ -240,7 +241,7 @@ export default function ArtPage() {
             {listingId && (
               <div className="mt-4">
                 <a 
-                  href={`https://manifold.xyz/@perrinexyz/id/${listingId}`}
+                  href={`https://manifold.xyz/@perrinexyz/id/${claimPageId}`}
                   target="_blank"
                   rel="noreferrer"
                   className="text-xs text-accent hover:text-accent/80 transition"
