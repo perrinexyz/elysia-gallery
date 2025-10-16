@@ -39,11 +39,15 @@ export async function fetchManifoldBids(listingId: number): Promise<ManifoldBid[
     // Fetch last 50000 blocks (~7 days of auction data)
     const fromBlock = Math.max(0, currentBlock - 50000);
     
-    console.log(`Fetching bids for listing ${listingId} from blocks ${fromBlock} to ${currentBlock}`);
+    console.log(`🔍 Fetching bids for listing ${listingId} from blocks ${fromBlock} to ${currentBlock}`);
     
     const events = await contract.queryFilter(filter, fromBlock, currentBlock);
     
-    console.log(`Found ${events.length} bid events for listing ${listingId}`);
+    console.log(`✅ Found ${events.length} bid events for listing ${listingId}`);
+    
+    if (events.length > 0) {
+      console.log("📋 First event sample:", events[0]);
+    }
     
     if (events.length === 0) {
       return [];
@@ -54,11 +58,25 @@ export async function fetchManifoldBids(listingId: number): Promise<ManifoldBid[
         const log = event as EventLog;
         const block = await event.getBlock();
         
-        // Parse the event args correctly
-        const listingIdFromEvent = log.args[0];
-        const referrer = log.args[1];
-        const bidder = log.args[2];
-        const amount = log.args[3];
+        // The args might be nested differently - let's handle both cases
+        let listingIdFromEvent, bidder, amount;
+        
+        if (log.args && log.args.length >= 4) {
+          // Direct array access
+          listingIdFromEvent = log.args[0];
+          bidder = log.args[2];
+          amount = log.args[3];
+        } else if (log.args) {
+          // Named access
+          listingIdFromEvent = log.args.listingId;
+          bidder = log.args.bidder;
+          amount = log.args.amount;
+        } else {
+          // Fallback: parse from topics
+          listingIdFromEvent = parseInt(log.topics[1], 16);
+          bidder = '0x' + log.topics[3].slice(26);
+          amount = BigInt(log.data);
+        }
         
         return {
           listingId: Number(listingIdFromEvent),
