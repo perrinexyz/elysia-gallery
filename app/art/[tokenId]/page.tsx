@@ -15,7 +15,7 @@ const TOTAL_SUPPLY = 21;
 const MANIFOLD_AUCTION_CONTRACT = "0x3a3548e060be10c2614d0a4cb0c03cc9093fd799";
 
 // Auction end time - All auctions end at 1:00pm PST on 10/19/2025
-const AUCTION_END_TIME = new Date("2025-10-19T21:00:00Z").getTime(); // 1:00pm PST = 9:00pm UTC
+const AUCTION_END_TIME = new Date("2025-10-19T20:00:00Z").getTime(); // 1:00pm PST = 9:00pm UTC
 
 const AUCTION_END_TIMES: Record<number, number> = {
   1: AUCTION_END_TIME,
