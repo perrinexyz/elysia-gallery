@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
 
 export const metadata: Metadata = {
-  title: "Driforian — On-Chain Gallery",
+  title: "Elysia Gallery",
   description: "21 fully on-chain works · pixel-perfect viewer · live bids",
   icons: { icon: "/favicon.ico" },
 };
