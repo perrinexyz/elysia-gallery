@@ -7,7 +7,7 @@ import Preloader from "@/components/Preloader";
 
 export const metadata: Metadata = {
   title: "Elysia Gallery",
-  description: "21 fully on-chain works · pixel-perfect viewer · live bids",
+  description: "perrinexyz",
   icons: { icon: "/favicon.ico" },
 };
 
